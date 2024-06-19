@@ -1,0 +1,50 @@
+.INCLUDE 45nm_HP.pm
+.OPTIONS GMIN=1e-020 ABSTOL=1e-18
+
+* Definizione dei parametri
+.PARAM Lmin=45n
+.PARAM Wmin=45n
+.PARAM Ldiff=90n
+
+* Descrizione della cella
+Mn1 dum in1 1 1 pmos W={Wmin} L={Lmin} AS={Wmin*Ldiff} AD={Wmin*Ldiff} PS={2*(Ldiff+Wmin)} PD={2*(Ldiff+Wmin)}
+Mn2 dd in2 out 1 pmos W={Wmin} L={Lmin} AS={Wmin*Ldiff} AD={Wmin*Ldiff} PS={2*(Ldiff+Wmin)} PD={2*(Ldiff+Wmin)}
+
+Vdd dd	0	0
+Va 	in1	0	0
+Vb  in2 0   0
+Vlk dum out 0
+
+* Definizione del tipo di analisi
+.CONTROL
+
+* Input combinations: 00
+alter Vdd = 1  
+alter Va = 0
+alter Vb = 0
+dc TEMP 85 85 1
+print V(dd) V(in1) V(in2) V(out) I(Vlk)
+
+* Input combinations: 01
+alter Vdd = 0
+alter Va = 0
+alter Vb = 1
+dc TEMP 85 85 1
+print V(dd) V(in1) V(in2) V(out) I(Vlk)
+
+* Input combinations: 10
+alter Vdd = 0
+alter Va = 1
+alter Vb = 0
+dc TEMP 85 85 1
+print V(dd) V(in1) V(in2) V(out) I(Vlk)
+
+* Input combinations: 11
+alter Vdd = 0
+alter Va = 1
+alter Vb = 1
+dc TEMP 85 85 1
+print V(dd) V(in1) V(in2) V(out) I(Vlk)
+
+.ENDC
+.END
